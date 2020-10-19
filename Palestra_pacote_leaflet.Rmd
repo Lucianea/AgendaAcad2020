@@ -1,0 +1,249 @@
+---
+title: "Primeiros Passos na Visualização de dados com R"
+subtitle: "Produzindo mapas com o pacote leaftet"
+author: "Luciane F. Alcoforado"
+institute: "Professora de Estatística da UFF "
+date: "22 de outubro de 2020"
+output:
+  xaringan::moon_reader:
+    css: [kunoichi, chocolate-fonts, custom.css]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+class: middle
+
+# PROFA. LUCIANE ALCOFORADO
+  
+* Formada em Matemática com mestrado e doutorado na área de Engenharia, iniciei meus estudos da linguagem R em 2006;
+
+* Em 2014 publiquei meu primeiro livro de Introdução ao R pela EDUFF e em 2017 o segundo sobre Visualização de Dados (eu e prof. Ariel);
+
+* Idealizei e coordenei o projeto de extensão [Estatística é com R!](www.estatisticacomr.uff.br), o evento [SER - Seminário Internacional de Estatística com R](www.ser.uff.br);
+
+* Sou uma das organizadoras do grupo [R-Ladies Niterói](https://www.meetup.com/pt-BR/rladies-niteroi/)
+
+### Contato:
+
+- Email: lucianea@id.uff.br
+
+- [LinkedIn](https://www.linkedin.com/in/luciane-alcoforado-4a344a101/)
+
+```{r message=FALSE, warning=FALSE, , out.width="35%", paged.print=FALSE, echo=FALSE, fig.align = 'center'}
+knitr::include_graphics("Avatar.png")
+```
+
+
+---
+
+class: middle
+
+# O que é o leaflet
+
+O *leaflet* é uma biblioteca javascript para criação de mapas interativos. O pacote *leaflet* do R torna a tarefa de produzir estes mapas muito fácil e ao alcance de todos.
+  
+```{r echo=FALSE}
+
+library(leaflet)
+
+m <- leaflet() %>%
+  addTiles() %>%  
+  addMarkers(lng=-43.1271044, lat=-22.8974292, popup="Nossa UFF")
+m  
+```
+
+
+---
+class: middle
+
+# Aplicações
+
+Sempre que seu estudo ou processo de tomada de decisão necessitar de uma visualização em mapas:
+
+* Localização de assaltos, roubos, etc
+
+* Localização de queimadas, raios, etc
+
+* Localização de pontos críticos em uma rodovia
+
+* Localização de ocorrência de doenças
+
+* Localização de pontos turísticos
+
+* Localização de pontos de engarrafamento de trânsito, alagamento de ruas, etc
+
+---
+class: middle
+
+# Exemplo 1
+
+Criando um aplicativo: Onde fui roubado?
+
+```{r message=FALSE, warning=FALSE, , out.width="95%", paged.print=FALSE, echo=FALSE, fig.align = 'center'}
+knitr::include_graphics("fuiroubado.png")
+```
+
+---
+class: middle
+
+# Exemplo 2
+
+Mapeando raios no Brasil
+
+```{r message=FALSE, warning=FALSE, , out.width="95%", paged.print=FALSE, echo=FALSE, fig.align = 'center'}
+knitr::include_graphics("raios.png")
+```
+
+---
+class: middle
+
+# Exemplo 3
+
+Acidentes de trânsito
+
+```{r message=FALSE, warning=FALSE, , out.width="95%", paged.print=FALSE, echo=FALSE, fig.align = 'center'}
+knitr::include_graphics("acidentes.png")
+```
+
+---
+class: middle
+
+# Exemplo 4
+
+Covid por CEP
+
+```{r message=FALSE, warning=FALSE, , out.width="95%", paged.print=FALSE, echo=FALSE, fig.align = 'center'}
+knitr::include_graphics("covid.png")
+```
+
+---
+class: middle
+
+# Exemplo 5
+
+Equipamentos culturais no Estado do Rio de Janeiro
+
+```{r message=FALSE, warning=FALSE, , out.width="95%", paged.print=FALSE, echo=FALSE, fig.align = 'center'}
+knitr::include_graphics("cultural.png")
+```
+
+---
+class: middle
+
+# O que precisa para fazer um mapa interativo?
+
+* Uma malha da localidade em questão
+
+* Uma base de dados georeferenciada
+
+* Uma saída html
+
+```{r message=FALSE, warning=FALSE, , out.width="95%", paged.print=FALSE, echo=FALSE, fig.align = 'center'}
+knitr::include_graphics("precisa.png")
+```
+
+---
+class: middle
+
+# Instalação do pacote
+
+
+```{r eval=FALSE,  message=FALSE, warning=FALSE, , out.width="95%", include=T, paged.print=FALSE}
+install.packages("leaflet")
+```
+
+---
+class: middle
+
+# Instalação do pacote
+
+
+```{r eval=FALSE,  message=FALSE, warning=FALSE, , out.width="95%", include=FALSE, paged.print=FALSE}
+install.packages("leaflet")
+```
+
+Uma vez instalado, você pode usar este pacote no console R, nos documentos R Markdown e nos aplicativos Shiny.
+
+---
+
+### Código:
+
+```{r message=FALSE, warning=FALSE}
+library(leaflet) # Carrega o pacote
+
+m <- leaflet() %>%
+  addTiles() %>%  
+  addMarkers(lng=-43.1271044, lat=-22.8974292, popup="Nossa UFF") # Cria o objeto mapa denominado "m"
+m  # Imprime o mapa
+```
+
+---
+class: middle
+
+# Banco de Dados
+
+É necessário uma base de dados contendo latitude e longitude de cada elemento observado.
+
+Exemplo:
+
+Coordenadas geográficas Niterói:
+
+**Latitude: -22.8808, Longitude: -43.1043**
+
+
+  
+### Código
+
+Com 3 linhas de código, vamos fazer nosso primeiro mapa da web interativo!
+  
+```{r message=FALSE, warning=FALSE}
+library(leaflet) # Carrega o pacote
+
+m <- leaflet() %>%
+  addTiles() %>%  
+  addMarkers(lng=-43.1043, lat=-22.8808, popup="Niterói") #cria o objeto mapa
+
+m  # Imprime o mapa
+```
+
+
+---
+
+#Lendo uma base de dados georeferenciada
+
+
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+m <- leaflet() %>%
+  addTiles() %>%  
+  addMarkers(lng=-43.1043, lat=-22.8808, popup="Niterói") #cria o objeto mapa
+
+m  # Imprime o mapa
+```
+
+---
+class: middle
+
+# Encerramento
+
+
+  
+
+                  Agradecemos a participação de todos!
+  
+
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
