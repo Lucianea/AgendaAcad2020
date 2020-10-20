@@ -133,6 +133,19 @@ knitr::include_graphics("cultural.png")
 ---
 class: middle
 
+#Exemplo 6
+
+Aplicativo shiny com os locais de nascimento de todos os jogadores que participaram da copa do mundo em 2018
+
+
+(https://allezcannes.shinyapps.io/Soccer_squads/)
+
+```{r message=FALSE, warning=FALSE, , out.width="95%", paged.print=FALSE, echo=FALSE, fig.align = 'center'}
+knitr::include_graphics("shiny_leaflet.png")
+```
+---
+class: middle
+
 # O que precisa para fazer um mapa interativo?
 
 * Uma malha da localidade em questão
@@ -155,15 +168,6 @@ class: middle
 install.packages("leaflet")
 ```
 
----
-class: middle
-
-# Instalação do pacote
-
-
-```{r eval=FALSE,  message=FALSE, warning=FALSE, , out.width="95%", include=FALSE, paged.print=FALSE}
-install.packages("leaflet")
-```
 
 Uma vez instalado, você pode usar este pacote no console R, nos documentos R Markdown e nos aplicativos Shiny.
 
@@ -193,7 +197,7 @@ Coordenadas geográficas Niterói:
 
 **Latitude: -22.8808, Longitude: -43.1043**
 
-
+---
   
 ### Código
 
@@ -216,34 +220,216 @@ m  # Imprime o mapa
 
 
 
-```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
-m <- leaflet() %>%
+```{r  message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+library(leaflet)
+
+dados1 <- read_csv2("dados1.csv")
+
+head(dados1)
+
+head(dados1$nome)
+
+dados1$nome <- iconv(dados1$nome) #corrige os nomes
+
+head(dados1$nome)
+
+
+```
+---
+#O mapa
+
+```{r message=FALSE, warning=FALSE}
+dados1H = dados1 %>% filter(sexo == "Homens")
+
+m <- leaflet(dados1H) %>%
   addTiles() %>%  
-  addMarkers(lng=-43.1043, lat=-22.8808, popup="Niterói") #cria o objeto mapa
+  addMarkers(lng=~longitude,
+             lat=~latitude,
+             label = ~as.character(nascidos_2018)) #cria o objeto mapa
 
 m  # Imprime o mapa
+
+
 ```
 
 ---
+
+
+#Círculo como marcador de pontos
+
+O raio do círculo pode ser ajustado de acordo com alguma variável numérica
+
+```{r  message=FALSE, warning=FALSE}
+
+dados1M = dados1 %>% filter(sexo == "Mulheres")
+
+m <- leaflet(dados1M) %>%
+  addTiles() %>%  
+  addCircles(lng=~longitude,
+             lat=~latitude,
+             label = ~as.character(nascidos_2018),
+             color = "red",
+             radius = ~nascidos_2018 ) #cria o objeto mapa
+
+m  # Imprime o mapa
+
+
+```
+
+---
+
 class: middle
 
+#Cria um agrupamento dos pontos
+
+```{r message=FALSE, warning=FALSE}
+dados2 <- read_csv2("dados2.csv")
+dados2$nome <- iconv(dados2$nome) #corrige os nomes
+head(dados2)
+
+dados2 %>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(lng = ~longitude,
+             lat = ~latitude,
+             popup = ~nome,
+             clusterOptions = markerClusterOptions())
+```
+
+
+---
+
+#Customizando os ícones
+
+```{r}
+icon.pop <- awesomeIcons(icon = "users",
+                           markerColor =
+                           ifelse(dados2$Regiao =="NORTE",
+                                                "green",
+                                  ifelse(dados2$Regiao =="SUL",
+                                         "blue", "red")),
+                           library = "fa")
+
+leaflet(dados2) %>% addTiles() %>%
+  addAwesomeMarkers(~longitude, ~latitude, 
+                    icon = icon.pop,
+                    label = ~paste0(media_moradores_2019,", ", uf))
+```
+
+---
+#Filtrando dados
+
+```{r}
+
+#Filtrando Região Norte
+
+dados = dados2 %>% 
+  filter(Regiao == "NORTE")
+
+leaflet(dados) %>% addTiles() %>%
+  addAwesomeMarkers(~longitude, ~latitude, 
+                    icon = icon.pop,
+                    label = ~paste0(media_moradores_2019,", ", uf))
+```
+
+---
+
+# Onde obter a latitude e longitude das cidades do Brasil?
+
+(https://www.ibge.gov.br/geociencias/organizacao-do-territorio/malhas-territoriais.html)
+
+(https://www.ipea.gov.br/ipeageo/malhas.html)
+
+(https://community.qlik.com/t5/Qlik-Brasil/Municipios-do-Brasil-com-Latitude-e-Longitude/td-p/1480217?attachment-id=66267)
+
+(https://github.com/kelvins/Municipios-Brasileiros)
+
+```{r eval=FALSE, include=FALSE}
+#library(rgdal)
+# maptools::readShapePoly
+br <- readShapePoly("./shapefiles/brasil/BRA_adm_shp/BRA_adm0.shp") # 0: país, 1: estados, 2: municípios
+estados1 <- readShapePoly("./shapefiles/brasil/BRA_adm_shp/BRA_adm1.shp") # 0: país, 1: estados, 2: municípios
+cidades <- readShapePoly("./shapefiles/brasil/BRA_adm_shp/BRA_adm2")
+biomas <- readShapePoly("./shapefiles/brasil/BR_BIOMAS_IBGE.shp")
+# rgdal::readOGR
+estados <- readOGR("./shapefiles/brasil/BRA_adm_shp/", "BRA_adm1")
+```
+
+---
+
+##Efeito de agrupamento nos 5570 Municípios do Brasil
+
+###Botão de localização
+
+```{r message=FALSE, warning=FALSE}
+dados2 <- read_csv2("nasc_vivos_2018_municipios.csv")
+dados2$nome <- iconv(dados2$nome) #corrige os nomes
+head(dados2)
+
+dados2 %>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(lng = ~longitude,
+             lat = ~latitude,
+             popup = ~nome,
+             clusterOptions = markerClusterOptions()) %>%
+    addEasyButton(easyButton(icon="fa-crosshairs",
+                             title = "Localize-me",
+                             onClick=JS("function(btn, map){ map.locate({setView: true}); }")))
+
+```
+---
+#Efeito mapa de calor
+
+```{r message=FALSE, warning=FALSE}
+library(leaflet.extras)
+
+head(dados2)
+
+dados2 %>% 
+  leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(lng = ~longitude,
+             lat = ~latitude,
+             popup = ~paste0(nome,", ",NASC_VIVOS_2018),
+             clusterOptions = markerClusterOptions()) %>% 
+  addHeatmap(lng = ~longitude,
+             lat = ~latitude,
+             intensity = ~NASC_VIVOS_2018,
+             blur = 20, max = 0.05, radius = 15 )
+
+```
+
+---
+
+# E se eu tiver o endereço, como obter latitude e longitude?
+
+
+
+Felipe Lima criou um banco de dados Postgres/MySQL com todas as cidades e estados brasileiras, incluindo ruas, latitudes, longitudes e CEPs.
+
+(https://github.com/felipecsl/brazil.db)
+
+---
 # Encerramento
 
+Fonte Principal:
+
+* (http://rstudio.github.io/leaflet/markers.html)
+
+Outras fontes:
+
+* https://rpubs.com/mattdray/basic-leaflet-maps
 
   
 
                   Agradecemos a participação de todos!
   
 
-© 2020 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Help
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
+© 2020 PROFA. LUCIANE ALCOFORADO/UFF, Agenda Acadêmica
+
+```{r message=FALSE, warning=FALSE, , out.width="35%", paged.print=FALSE, echo=FALSE, fig.align = 'center'}
+knitr::include_graphics("avatarfim.png")
+```
