@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Primeiros Passos na Visualização de dados com R</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Luciane F. Alcoforado" />
+    <link href="libs/remark-css-0.0.1/kunoichi.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/chocolate-fonts.css" rel="stylesheet" />
+    <script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+    <script src="libs/jquery-1.12.4/jquery.min.js"></script>
+    <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-1.3.1/leaflet.js"></script>
+    <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+    <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+    <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+    <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+    <script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Primeiros Passos na Visualização de dados com R
+## Produzindo mapas com o pacote leaftet
+### Luciane F. Alcoforado
+### Professora de Estatística da UFF
+### 22 de outubro de 2020
+
+---
+
+
+class: middle
+
+# PROFA. LUCIANE ALCOFORADO
+  
+* Formada em Matemática com mestrado e doutorado na área de Engenharia, iniciei meus estudos da linguagem R em 2006;
+
+* Em 2014 publiquei meu primeiro livro de Introdução ao R pela EDUFF e em 2017 o segundo sobre Visualização de Dados (eu e prof. Ariel);
+
+* Idealizei e coordenei o projeto de extensão [Estatística é com R!](www.estatisticacomr.uff.br), o evento [SER - Seminário Internacional de Estatística com R](www.ser.uff.br);
+
+* Sou uma das organizadoras do grupo [R-Ladies Niterói](https://www.meetup.com/pt-BR/rladies-niteroi/)
+
+### Contato:
+
+- Email: lucianea@id.uff.br
+
+- [LinkedIn](https://www.linkedin.com/in/luciane-alcoforado-4a344a101/)
+
+&lt;img src="Avatar.png" width="35%" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+class: middle
+
+# O que é o leaflet
+
+O *leaflet* é uma biblioteca javascript para criação de mapas interativos. O pacote *leaflet* do R torna a tarefa de produzir estes mapas muito fácil e ao alcance de todos.
+  
+<div id="htmlwidget-0a947427e46cf54efe55" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0a947427e46cf54efe55">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[-22.8974292,-43.1271044,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"Nossa UFF",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-22.8974292,-22.8974292],"lng":[-43.1271044,-43.1271044]}},"evals":[],"jsHooks":[]}</script>
+
+
+---
+class: middle
+
+# Aplicações
+
+Sempre que seu estudo ou processo de tomada de decisão necessitar de uma visualização em mapas:
+
+* Localização de assaltos, roubos, etc
+
+* Localização de queimadas, raios, etc
+
+* Localização de pontos críticos em uma rodovia
+
+* Localização de ocorrência de doenças
+
+* Localização de pontos turísticos
+
+* Localização de pontos de engarrafamento de trânsito, alagamento de ruas, etc
+
+---
+class: middle
+
+# Exemplo 1
+
+Criando um aplicativo: Onde fui roubado?
+
+&lt;img src="fuiroubado.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle
+
+# Exemplo 2
+
+Mapeando raios no Brasil
+
+&lt;img src="raios.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle
+
+# Exemplo 3
+
+Acidentes de trânsito
+
+&lt;img src="acidentes.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle
+
+# Exemplo 4
+
+Covid por CEP
+
+&lt;img src="covid.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle
+
+# Exemplo 5
+
+Equipamentos culturais no Estado do Rio de Janeiro
+
+&lt;img src="cultural.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle
+
+# O que precisa para fazer um mapa interativo?
+
+* Uma malha da localidade em questão
+
+* Uma base de dados georeferenciada
+
+* Uma saída html
+
+&lt;img src="precisa.png" width="95%" style="display: block; margin: auto;" /&gt;
+
+---
+class: middle
+
+# Instalação do pacote
+
+
+
+```r
+install.packages("leaflet")
+```
+
+---
+class: middle
+
+# Instalação do pacote
+
+
+
+
+Uma vez instalado, você pode usar este pacote no console R, nos documentos R Markdown e nos aplicativos Shiny.
+
+---
+
+### Código:
+
+
+```r
+library(leaflet) # Carrega o pacote
+
+m &lt;- leaflet() %&gt;%
+  addTiles() %&gt;%  
+  addMarkers(lng=-43.1271044, lat=-22.8974292, popup="Nossa UFF") # Cria o objeto mapa denominado "m"
+m  # Imprime o mapa
+```
+
+<div id="htmlwidget-c45e746adce5cc16b56f" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c45e746adce5cc16b56f">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[-22.8974292,-43.1271044,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"Nossa UFF",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-22.8974292,-22.8974292],"lng":[-43.1271044,-43.1271044]}},"evals":[],"jsHooks":[]}</script>
+
+---
+class: middle
+
+# Banco de Dados
+
+É necessário uma base de dados contendo latitude e longitude de cada elemento observado.
+
+Exemplo:
+
+Coordenadas geográficas Niterói:
+
+**Latitude: -22.8808, Longitude: -43.1043**
+
+
+  
+### Código
+
+Com 3 linhas de código, vamos fazer nosso primeiro mapa da web interativo!
+  
+
+```r
+library(leaflet) # Carrega o pacote
+
+m &lt;- leaflet() %&gt;%
+  addTiles() %&gt;%  
+  addMarkers(lng=-43.1043, lat=-22.8808, popup="Niterói") #cria o objeto mapa
+
+m  # Imprime o mapa
+```
+
+<div id="htmlwidget-b7ff6af727a1e4ea1eeb" style="width:504px;height:504px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b7ff6af727a1e4ea1eeb">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[-22.8808,-43.1043,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"Niterói",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-22.8808,-22.8808],"lng":[-43.1043,-43.1043]}},"evals":[],"jsHooks":[]}</script>
+
+
+---
+
+#Lendo uma base de dados georeferenciada
+
+
+
+
+
+---
+class: middle
+
+# Encerramento
+
+
+  
+
+                  Agradecemos a participação de todos!
+  
+
+© 2020 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
