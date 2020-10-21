@@ -183,7 +183,10 @@ m <- leaflet() %>%
   addMarkers(lng=-43.1271044, lat=-22.8974292, popup="Nossa UFF") # Cria o objeto mapa denominado "m"
 m  # Imprime o mapa
 ```
-
+---
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+m  # Imprime o mapa
+```
 ---
 class: middle
 
@@ -213,12 +216,13 @@ m <- leaflet() %>%
 m  # Imprime o mapa
 ```
 
-
+---
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+m  # Imprime o mapa
+```
 ---
 
 #Lendo uma base de dados georeferenciada
-
-
 
 ```{r  message=FALSE, warning=FALSE}
 library(readr)
@@ -255,6 +259,10 @@ m  # Imprime o mapa
 ```
 
 ---
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+m  # Imprime o mapa
+```
+---
 
 
 #Círculo como marcador de pontos
@@ -274,10 +282,11 @@ m <- leaflet(dados1M) %>%
              radius = ~nascidos_2018 ) #cria o objeto mapa
 
 m  # Imprime o mapa
-
-
 ```
-
+---
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+m  # Imprime o mapa
+```
 ---
 
 class: middle
@@ -289,16 +298,18 @@ dados2 <- read_csv2("dados2.csv")
 dados2$nome <- iconv(dados2$nome) #corrige os nomes
 head(dados2)
 
-dados2 %>% 
-  leaflet() %>% 
+m <- leaflet(dados2) %>% 
   addTiles() %>% 
   addMarkers(lng = ~longitude,
              lat = ~latitude,
              popup = ~nome,
              clusterOptions = markerClusterOptions())
+m
+``` 
+---
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+m  # Imprime o mapa
 ```
-
-
 ---
 
 #Customizando os ícones
@@ -312,12 +323,16 @@ icon.pop <- awesomeIcons(icon = "users",
                                          "blue", "red")),
                            library = "fa")
 
-leaflet(dados2) %>% addTiles() %>%
+m <- leaflet(dados2) %>% addTiles() %>%
   addAwesomeMarkers(~longitude, ~latitude, 
                     icon = icon.pop,
                     label = ~paste0(media_moradores_2019,", ", uf))
+m
 ```
-
+---
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+m  # Imprime o mapa
+```
 ---
 #Filtrando dados
 
@@ -328,12 +343,16 @@ leaflet(dados2) %>% addTiles() %>%
 dados = dados2 %>% 
   filter(Regiao == "NORTE")
 
-leaflet(dados) %>% addTiles() %>%
+m <- leaflet(dados) %>% addTiles() %>%
   addAwesomeMarkers(~longitude, ~latitude, 
                     icon = icon.pop,
                     label = ~paste0(media_moradores_2019,", ", uf))
+m
 ```
-
+---
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+m  # Imprime o mapa
+```
 ---
 
 # Onde obter a latitude e longitude das cidades do Brasil?
@@ -363,13 +382,13 @@ estados <- readOGR("./shapefiles/brasil/BRA_adm_shp/", "BRA_adm1")
 
 ###Botão de localização
 
+<small>
 ```{r message=FALSE, warning=FALSE}
 dados2 <- read_csv2("nasc_vivos_2018_municipios.csv")
 dados2$nome <- iconv(dados2$nome) #corrige os nomes
 head(dados2)
 
-dados2 %>% 
-  leaflet() %>% 
+m <- leaflet(dados2) %>% 
   addTiles() %>% 
   addMarkers(lng = ~longitude,
              lat = ~latitude,
@@ -378,9 +397,16 @@ dados2 %>%
     addEasyButton(easyButton(icon="fa-crosshairs",
                              title = "Localize-me",
                              onClick=JS("function(btn, map){ map.locate({setView: true}); }")))
+m
 
 ```
 ---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+m  # Imprime o mapa
+```
+---
+
 #Efeito mapa de calor
 
 ```{r message=FALSE, warning=FALSE}
@@ -388,8 +414,7 @@ library(leaflet.extras)
 
 head(dados2)
 
-dados2 %>% 
-  leaflet() %>% 
+m <- leaflet(dados2) %>% 
   addTiles() %>% 
   addMarkers(lng = ~longitude,
              lat = ~latitude,
@@ -399,10 +424,17 @@ dados2 %>%
              lat = ~latitude,
              intensity = ~NASC_VIVOS_2018,
              blur = 20, max = 0.05, radius = 15 )
+m
 
 ```
-
 ---
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+m  # Imprime o mapa
+```
+---
+
+
 
 # E se eu tiver o endereço, como obter latitude e longitude?
 
@@ -415,21 +447,27 @@ Felipe Lima criou um banco de dados Postgres/MySQL com todas as cidades e estado
 ---
 # Encerramento
 
-Fonte Principal:
+Fontes
 
-* (http://rstudio.github.io/leaflet/markers.html)
-
-Outras fontes:
+<small>
+* http://rstudio.github.io/leaflet/markers.html
 
 * https://rpubs.com/mattdray/basic-leaflet-maps
+
+* https://www.earthdatascience.org/courses/earth-analytics/get-data-using-apis/leaflet-r/
+
+* https://www.curso-r.com/tags/leaflet/
+
+* http://www.estatisticacomr.uff.br/?p=749
+</small> 
 
   
 
                   Agradecemos a participação de todos!
   
 
-© 2020 PROFA. LUCIANE ALCOFORADO/UFF, Agenda Acadêmica
-
 ```{r message=FALSE, warning=FALSE, , out.width="35%", paged.print=FALSE, echo=FALSE, fig.align = 'center'}
 knitr::include_graphics("avatarfim.png")
 ```
+
+<small> © 2020 PROFA. LUCIANE ALCOFORADO/UFF, Agenda Acadêmica</small> 
